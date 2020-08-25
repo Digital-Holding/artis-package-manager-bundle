@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4350706040325c58a5b2278cd807434",
+    "content-hash": "3219084b9f479f2d3113ef7f97e4e962",
     "packages": [
         {
             "name": "kkszymanowski/traitor",
-            "version": "0.2.5",
+            "version": "dev-retrieve_namespace_on_added_declare",
             "source": {
                 "type": "git",
-                "url": "https://github.com/KKSzymanowski/Traitor.git",
-                "reference": "9770fc7de72ff585601dc9c42b31715d9fc40a24"
+                "url": "https://github.com/Digital-Holding/Traitor.git",
+                "reference": "d9b9061980155f92bf097b07f694178e600599e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KKSzymanowski/Traitor/zipball/9770fc7de72ff585601dc9c42b31715d9fc40a24",
-                "reference": "9770fc7de72ff585601dc9c42b31715d9fc40a24",
+                "url": "https://api.github.com/repos/Digital-Holding/Traitor/zipball/d9b9061980155f92bf097b07f694178e600599e5",
+                "reference": "d9b9061980155f92bf097b07f694178e600599e5",
                 "shasum": ""
             },
             "require": {
@@ -33,7 +33,11 @@
                     "Traitor\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "classmap": [
+                    "tests/TestCase.php"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -45,11 +49,16 @@
             ],
             "description": "Add a trait use statement to existing PHP class",
             "keywords": [
+                "PHP",
                 "add",
-                "php",
                 "trait"
             ],
-            "time": "2018-04-19T12:24:36+00:00"
+            "support": {
+                "issues": "https://github.com/kkszymanowski/traitor/issues",
+                "source": "https://github.com/kkszymanowski/traitor",
+                "email": "kuba.szymanowski@inf24.pl"
+            },
+            "time": "2020-08-25T13:45:18+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -2508,7 +2517,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kkszymanowski/traitor": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

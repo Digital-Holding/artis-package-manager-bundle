@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DH\ArtisPackageManagerBundle\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -31,5 +33,13 @@ final class AddCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $class = '';
+        $traitClass = '';
+
+        $traitAssigned = $this->traitor->alreadyUses($class, $traitClass);
+
+        if (!$traitAssigned) {
+            $this->traitor->addTrait($traitClass)->toClass($class);
+        }
     }
 }
