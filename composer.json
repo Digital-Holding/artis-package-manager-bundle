@@ -14,15 +14,15 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "kkszymanowski/traitor": "dev-retrieve_namespace_on_added_declare",
-        "nikic/php-parser": "^4.9",
+        "nikic/php-parser": "^4.9"
+    },
+    "require-dev": {
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
         "symfony/finder": "4.4.*",
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "4.4.*",
         "symfony/yaml": "4.4.*"
-    },
-    "require-dev": {
     },
     "config": {
         "preferred-install": {
@@ -38,23 +38,6 @@
     "autoload-dev": {
         "psr-4": {
             "DH\\ArtisPackageManagerBundle\\Tests\\": "tests/"
-        }
-    },
-    "replace": {
-        "paragonie/random_compat": "2.*",
-        "symfony/polyfill-ctype": "*",
-        "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php71": "*",
-        "symfony/polyfill-php70": "*",
-        "symfony/polyfill-php56": "*"
-    },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false,
-            "require": "4.4.*"
         }
     }
 }
