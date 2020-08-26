@@ -29,3 +29,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    dh_artis_package_manager_bundle.command.add:
+        class: DH\ArtisPackageManagerBundle\Console\Command\AddTraitCommand
+        arguments:
+            - "@parameter_bag"
+        tags:
+            - { name: console.command }

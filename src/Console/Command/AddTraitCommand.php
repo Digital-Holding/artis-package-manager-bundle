@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Traitor\Traitor;
 
-final class AddCommand extends Command
+final class AddTraitCommand extends Command
 {
     protected static $defaultName = 'artis:add-traits';
 
