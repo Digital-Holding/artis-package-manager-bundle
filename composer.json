@@ -13,7 +13,7 @@
         "php": ">=7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "kkszymanowski/traitor": "dev-retrieve_namespace_on_added_declare",
+        "kkszymanowski/traitor": "dev-remove_trait",
         "nikic/php-parser": "^4.9"
     },
     "require-dev": {
