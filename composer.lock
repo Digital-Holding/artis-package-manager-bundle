@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Digital-Holding/Traitor.git",
-                "reference": "0395787b38477a1b699256d0cf1bbf17c33e4049"
+                "reference": "13c2167925e6e82921596287a77c3ab27ba37877"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Digital-Holding/Traitor/zipball/0395787b38477a1b699256d0cf1bbf17c33e4049",
-                "reference": "0395787b38477a1b699256d0cf1bbf17c33e4049",
+                "url": "https://api.github.com/repos/Digital-Holding/Traitor/zipball/13c2167925e6e82921596287a77c3ab27ba37877",
+                "reference": "13c2167925e6e82921596287a77c3ab27ba37877",
                 "shasum": ""
             },
             "require": {
@@ -58,7 +58,7 @@
                 "source": "https://github.com/kkszymanowski/traitor",
                 "email": "kuba.szymanowski@inf24.pl"
             },
-            "time": "2020-08-28T14:01:42+00:00"
+            "time": "2020-08-31T08:51:59+00:00"
         },
         {
             "name": "nikic/php-parser",

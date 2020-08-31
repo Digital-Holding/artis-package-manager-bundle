@@ -12,3 +12,8 @@ services:
             - "@parameter_bag"
         tags:
             - { name: console.command, command: artis:remove-traits }
+
+    dh_artis_package_manager_bundle.command.install_package:
+        class: DH\ArtisPackageManagerBundle\Console\Command\InstallPackageCommand
+        tags:
+            - { name: console.command, command: artis:package:install }
