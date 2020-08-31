@@ -1,0 +1,7 @@
+services:
+    dh_artis_package_manager_bundle.command.add_trait:
+        class: DH\ArtisPackageManagerBundle\Console\Command\AddTraitCommand
+        arguments:
+            - "@parameter_bag"
+        tags:
+            - { name: console.command, command: artis:add-traits }

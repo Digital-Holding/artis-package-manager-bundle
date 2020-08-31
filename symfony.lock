@@ -1,4 +1,7 @@
 {
+    "kkszymanowski/traitor": {
+        "version": "0.2.5"
+    },
     "nikic/php-parser": {
         "version": "v4.9.0"
     },
