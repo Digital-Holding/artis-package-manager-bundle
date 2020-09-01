@@ -40,10 +40,15 @@ final class InstallPackageCommand extends Command
         $packageName = $input->getArgument('packageName');
 
         $addTraitCommand = $this->getApplication()->find('artis:add-traits');
+        $addTraitCommand->setPackageName($packageName);
 
         passthru('composer require ' . $packageName );
 
-        $addTraitInput = new ArrayInput([$this->parameterBag]);
+        $arguments = [
+            $this->parameterBag,
+        ];
+
+        $addTraitInput = new ArrayInput($arguments);
         $addTraitCommand->run($addTraitInput, $output);
 
         $outputStyle = new SymfonyStyle($input, $output);

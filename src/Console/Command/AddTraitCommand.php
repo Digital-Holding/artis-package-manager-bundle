@@ -20,6 +20,9 @@ final class AddTraitCommand extends Command
     /** @var ParameterBagInterface */
     private $parameterBag;
 
+    /** @var string */
+    private $packageName;
+
     public function __construct(ParameterBagInterface $parameterBag)
     {
         parent::__construct();
@@ -35,11 +38,22 @@ final class AddTraitCommand extends Command
             ->setHelp('This command allows you to set up traits...');
     }
 
+    public function setPackageName(string $packageName): void
+    {
+        $this->packageName = $packageName;
+    }
+
+    public function getPackageName(): ?string
+    {
+        return $this->packageName;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $projectDir = $this->parameterBag->get('kernel.project_dir');
 
-        $configPath = $projectDir . '/src/Resources/config/artis_package_manager_config.json';
+        $configPath = $projectDir . '/vendor/' . $this->packageName . '/src/Resources/config/artis_package_manager_config.json';
+
         $configFile = file_get_contents($configPath);
         $config = json_decode($configFile, true);
 
