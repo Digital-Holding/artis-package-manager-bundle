@@ -31,21 +31,24 @@ final class InstallPackageCommand extends Command
         $this
             ->setDescription('Installing package.')
             ->setHelp('This command allows you to install and set up package...')
-            ->addArgument('packageName', InputOption::VALUE_REQUIRED, 'Set package name')
-        ;
+            ->addArgument('packageName', InputOption::VALUE_REQUIRED, 'Set package name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $packageName = $input->getArgument('packageName');
 
+        if (false !== strpos($packageName, ":")) {
+            $packageName = substr($packageName, 0, strpos($packageName, ":"));
+        }
+
         $addTraitCommand = $this->getApplication()->find('artis:add-traits');
         $addTraitCommand->setPackageName($packageName);
 
-        passthru('composer require ' . $packageName );
+        passthru('composer require ' . $packageName);
 
         $arguments = [
-            $this->parameterBag,
+            AddTraitCommand::getDefaultName(),
         ];
 
         $addTraitInput = new ArrayInput($arguments);
