@@ -42,8 +42,6 @@ final class RemovePackageCommand extends Command
             $packageName = substr($packageName, 0, strpos($packageName, ":"));
         }
 
-        passthru('composer remove ' . $packageName);
-
         $removeTraitCommand = $this->getApplication()->find('artis:remove-traits');
         $removeTraitCommand->setPackageName($packageName);
 
@@ -53,6 +51,8 @@ final class RemovePackageCommand extends Command
 
         $removeTraitInput = new ArrayInput($arguments);
         $removeTraitCommand->run($removeTraitInput, $output);
+
+        passthru('composer remove ' . $packageName);
 
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln('<info>Package has been successfully removed.</info>');
