@@ -38,14 +38,14 @@ final class InstallPackageCommand extends Command
     {
         $packageName = $input->getArgument('packageName');
 
+        passthru('composer require ' . $packageName);
+
         if (false !== strpos($packageName, ":")) {
             $packageName = substr($packageName, 0, strpos($packageName, ":"));
         }
 
         $addTraitCommand = $this->getApplication()->find('artis:add-traits');
         $addTraitCommand->setPackageName($packageName);
-
-        passthru('composer require ' . $packageName);
 
         $arguments = [
             AddTraitCommand::getDefaultName(),

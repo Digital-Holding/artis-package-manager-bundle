@@ -57,7 +57,19 @@ final class AddTraitCommand extends Command
         $configFile = file_get_contents($configPath);
         $config = json_decode($configFile, true);
 
-        foreach ($config['install'] as $entity => $traits) {
+        foreach ($config['install'] as $elementName => $elements) {
+            switch ($elementName) {
+                case 'trait':
+                    $this->addTraitsForConfig($elements);
+                    break;
+                default:
+            }
+        }
+    }
+
+    private function addTraitsForConfig(array $elements): void
+    {
+        foreach ($elements as $entity => $traits) {
             foreach ($traits['add'] as $trait) {
                 $traitAssigned = $this->traitor->alreadyUses($entity, $trait);
 
