@@ -48,7 +48,7 @@ final class AddTraitCommand extends Command
         return $this->packageName;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $projectDir = $this->parameterBag->get('kernel.project_dir');
 

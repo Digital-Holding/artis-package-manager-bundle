@@ -20,6 +20,9 @@ final class RemoveTraitCommand extends Command
     /** @var ParameterBagInterface */
     private $parameterBag;
 
+    /** @var string */
+    private $packageName;
+
     public function __construct(ParameterBagInterface $parameterBag)
     {
         parent::__construct();
@@ -35,15 +38,38 @@ final class RemoveTraitCommand extends Command
             ->setHelp('This command allows you to remove traits...');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function setPackageName(string $packageName): void
+    {
+        $this->packageName = $packageName;
+    }
+
+    public function getPackageName(): ?string
+    {
+        return $this->packageName;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $projectDir = $this->parameterBag->get('kernel.project_dir');
 
-        $configPath = $projectDir . '/src/Resources/config/artis_package_manager_config.json';
+        $configPath = $projectDir . '/vendor/' . $this->packageName . '/src/Resources/config/artis_package_manager_config.json';
+
         $configFile = file_get_contents($configPath);
         $config = json_decode($configFile, true);
 
-        foreach ($config['install'] as $entity => $traits) {
+        foreach ($config['install'] as $elementName => $elements) {
+            switch ($elementName) {
+                case 'trait':
+                    $this->removeTraitsForConfig($elements);
+                    break;
+                default:
+            }
+        }
+    }
+
+    private function removeTraitsForConfig(array $elements): void
+    {
+        foreach ($elements as $entity => $traits) {
             foreach ($traits['add'] as $trait) {
                 $traitAssigned = $this->traitor->alreadyUses($entity, $trait);
 
