@@ -47,12 +47,14 @@ final class InstallPackageCommand extends Command
         $addTraitCommand = $this->getApplication()->find('artis:add-traits');
         $addTraitCommand->setPackageName($packageName);
 
-        $arguments = [
-            AddTraitCommand::getDefaultName(),
-        ];
-
-        $addTraitInput = new ArrayInput($arguments);
+        $addTraitInput = new ArrayInput(AddTraitCommand::getDefaultName());
         $addTraitCommand->run($addTraitInput, $output);
+
+        $addPackageConfigCommand = $this->getApplication()->find('artis:add-package-config');
+        $addPackageConfigCommand->setPackageName($packageName);
+
+        $addPackageConfigInput = new ArrayInput([AddPackageConfigCommand::getDefaultName()]);
+        $addPackageConfigCommand->run($addPackageConfigInput, $output);
 
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln('<info>Package has been successfully installed and configured.</info>');
