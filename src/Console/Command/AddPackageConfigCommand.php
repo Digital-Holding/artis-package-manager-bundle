@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Yaml;
 
 final class AddPackageConfigCommand extends Command
 {
@@ -66,14 +67,20 @@ final class AddPackageConfigCommand extends Command
     private function addPackageConfigForConfig(array $elements, string $projectDir): void
     {
         foreach ($elements as $packageConfigName => $packageConfigs) {
-            $packageConfigPath = $projectDir . '/vendor/' . $this->packageName . $packageConfigName;
+            $packageConfigPath = $projectDir . '/' . $packageConfigName;
 
-            $yamlParser = New Parser();
-            $packageConfig = $yamlParser->parse(file_get_contents($packageConfigPath));
+            $yamlParser = new Parser();
+            $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
 
             foreach ($packageConfigs['add'] as $packageConfig) {
+                $numberOfImports = count($packageConfigFile['imports']);
 
+                if (false === array_search($packageConfig, array_column($packageConfigFile['imports'], 'resource'))) {
+                    $packageConfigFile['imports'][$numberOfImports] = ['resource' => $packageConfig];
+                }
             }
+
+            file_put_contents($packageConfigPath, Yaml::dump($packageConfigFile, 99, 4));
         }
     }
 }
