@@ -44,20 +44,29 @@ final class InstallPackageCommand extends Command
             $packageName = substr($packageName, 0, strpos($packageName, ":"));
         }
 
+        $this->runAddTraitCommand($packageName, $output);
+        $this->runAddPackageConfigCommand($packageName, $output);
+
+        $outputStyle = new SymfonyStyle($input, $output);
+        $outputStyle->writeln('<info>Package has been successfully installed and configured.</info>');
+        $outputStyle->newLine();
+    }
+
+    private function runAddTraitCommand(string $packageName, OutputInterface $output): void
+    {
         $addTraitCommand = $this->getApplication()->find('artis:add-traits');
         $addTraitCommand->setPackageName($packageName);
 
-        $addTraitInput = new ArrayInput(AddTraitCommand::getDefaultName());
+        $addTraitInput = new ArrayInput([AddTraitCommand::getDefaultName()]);
         $addTraitCommand->run($addTraitInput, $output);
+    }
 
+    private function runAddPackageConfigCommand(string $packageName, OutputInterface $output): void
+    {
         $addPackageConfigCommand = $this->getApplication()->find('artis:add-package-config');
         $addPackageConfigCommand->setPackageName($packageName);
 
         $addPackageConfigInput = new ArrayInput([AddPackageConfigCommand::getDefaultName()]);
         $addPackageConfigCommand->run($addPackageConfigInput, $output);
-
-        $outputStyle = new SymfonyStyle($input, $output);
-        $outputStyle->writeln('<info>Package has been successfully installed and configured.</info>');
-        $outputStyle->newLine();
     }
 }

@@ -33,3 +33,10 @@ services:
             - "@parameter_bag"
         tags:
             - { name: console.command, command: artis:add-package-config }
+
+    dh_artis_package_manager_bundle.command.remove_package_config:
+        class: DH\ArtisPackageManagerBundle\Console\Command\RemovePackageConfigCommand
+        arguments:
+            - "@parameter_bag"
+        tags:
+            - { name: console.command, command: artis:remove-package-config }
