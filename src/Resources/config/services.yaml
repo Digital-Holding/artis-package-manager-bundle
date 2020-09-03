@@ -12,3 +12,24 @@ services:
             - "@parameter_bag"
         tags:
             - { name: console.command, command: artis:remove-traits }
+
+    dh_artis_package_manager_bundle.command.install_package:
+        class: DH\ArtisPackageManagerBundle\Console\Command\InstallPackageCommand
+        arguments:
+            - "@parameter_bag"
+        tags:
+            - { name: console.command, command: artis:package:install }
+
+    dh_artis_package_manager_bundle.command.remove_package:
+        class: DH\ArtisPackageManagerBundle\Console\Command\RemovePackageCommand
+        arguments:
+            - "@parameter_bag"
+        tags:
+            - { name: console.command, command: artis:package:remove }
+
+    dh_artis_package_manager_bundle.command.add_package_config:
+        class: DH\ArtisPackageManagerBundle\Console\Command\AddPackageConfigCommand
+        arguments:
+            - "@parameter_bag"
+        tags:
+            - { name: console.command, command: artis:add-package-config }

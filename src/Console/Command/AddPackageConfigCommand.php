@@ -8,14 +8,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Traitor\Traitor;
+use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Yaml;
 
-final class AddTraitCommand extends Command
+final class AddPackageConfigCommand extends Command
 {
-    protected static $defaultName = 'artis:add-traits';
-
-    /** @var Traitor */
-    private $traitor;
+    protected static $defaultName = 'artis:add-package-config';
 
     /** @var ParameterBagInterface */
     private $parameterBag;
@@ -27,15 +25,14 @@ final class AddTraitCommand extends Command
     {
         parent::__construct();
 
-        $this->traitor = new Traitor();
         $this->parameterBag = $parameterBag;
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Setting up traits.')
-            ->setHelp('This command allows you to set up traits...');
+            ->setDescription('Setting up package config.')
+            ->setHelp('This command allows you to set up package config...');
     }
 
     public function setPackageName(string $packageName): void
@@ -59,24 +56,31 @@ final class AddTraitCommand extends Command
 
         foreach ($config['install'] as $elementName => $elements) {
             switch ($elementName) {
-                case 'trait':
-                    $this->addTraitsForConfig($elements);
+                case 'config':
+                    $this->addPackageConfigForConfig($elements, $projectDir);
                     break;
                 default:
             }
         }
     }
 
-    private function addTraitsForConfig(array $elements): void
+    private function addPackageConfigForConfig(array $elements, string $projectDir): void
     {
-        foreach ($elements as $entity => $traits) {
-            foreach ($traits['add'] as $trait) {
-                $traitAssigned = $this->traitor->alreadyUses($entity, $trait);
+        foreach ($elements as $packageConfigName => $packageConfigs) {
+            $packageConfigPath = $projectDir . '/' . $packageConfigName;
 
-                if (!$traitAssigned) {
-                    $this->traitor->addTrait($trait)->toClass($entity);
+            $yamlParser = new Parser();
+            $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
+
+            foreach ($packageConfigs['add'] as $packageConfig) {
+                $numberOfImports = count($packageConfigFile['imports']);
+
+                if (false === array_search($packageConfig, array_column($packageConfigFile['imports'], 'resource'))) {
+                    $packageConfigFile['imports'][$numberOfImports] = ['resource' => $packageConfig];
                 }
             }
+
+            file_put_contents($packageConfigPath, Yaml::dump($packageConfigFile, 99, 4));
         }
     }
 }
