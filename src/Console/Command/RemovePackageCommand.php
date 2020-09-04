@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace DH\ArtisPackageManagerBundle\Console\Command;
 
+use DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemovePackageConfigCommand;
+use DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemovePackageRoutingCommand;
+use DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemoveTraitCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,6 +47,7 @@ final class RemovePackageCommand extends Command
 
         $this->runRemoveTraitCommand($packageName, $output);
         $this->runRemovePackageConfigCommand($packageName, $output);
+        $this->runRemoveTraitCommand($packageName, $output);
 
         passthru('composer remove ' . $packageName);
 
@@ -57,7 +61,7 @@ final class RemovePackageCommand extends Command
         $removeTraitCommand = $this->getApplication()->find('artis:remove-traits');
         $removeTraitCommand->setPackageName($packageName);
 
-        $removeTraitInput = new ArrayInput([RemovePackageCommand::getDefaultName()]);
+        $removeTraitInput = new ArrayInput([RemoveTraitCommand::getDefaultName()]);
         $removeTraitCommand->run($removeTraitInput, $output);
     }
 
@@ -68,5 +72,14 @@ final class RemovePackageCommand extends Command
 
         $removePackageConfigInput = new ArrayInput([RemovePackageConfigCommand::getDefaultName()]);
         $removePackageConfigCommand->run($removePackageConfigInput, $output);
+    }
+
+    private function runRemovePackageRoutingCommand(string $packageName, OutputInterface $output): void
+    {
+        $removePackageRoutingCommand = $this->getApplication()->find('artis:remove-package-routing');
+        $removePackageRoutingCommand->setPackageName($packageName);
+
+        $removePackageRoutingInput = new ArrayInput([RemovePackageRoutingCommand::getDefaultName()]);
+        $removePackageRoutingCommand->run($removePackageRoutingInput, $output);
     }
 }
