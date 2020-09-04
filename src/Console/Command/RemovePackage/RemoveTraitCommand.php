@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
-namespace DH\ArtisPackageManagerBundle\Console\Command;
+namespace DH\ArtisPackageManagerBundle\Console\Command\RemovePackage;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Yaml\Parser;
-use Symfony\Component\Yaml\Yaml;
+use Traitor\Traitor;
 
-final class AddPackageConfigCommand extends Command
+final class RemoveTraitCommand extends Command
 {
-    protected static $defaultName = 'artis:add-package-config';
+    protected static $defaultName = 'artis:remove-traits';
+
+    /** @var Traitor */
+    private $traitor;
 
     /** @var ParameterBagInterface */
     private $parameterBag;
@@ -25,14 +27,15 @@ final class AddPackageConfigCommand extends Command
     {
         parent::__construct();
 
+        $this->traitor = new Traitor();
         $this->parameterBag = $parameterBag;
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Setting up package config.')
-            ->setHelp('This command allows you to set up package config...');
+            ->setDescription('Removing traits.')
+            ->setHelp('This command allows you to remove traits...');
     }
 
     public function setPackageName(string $packageName): void
@@ -56,31 +59,24 @@ final class AddPackageConfigCommand extends Command
 
         foreach ($config['install'] as $elementName => $elements) {
             switch ($elementName) {
-                case 'config':
-                    $this->addPackageConfigForConfig($elements, $projectDir);
+                case 'trait':
+                    $this->removeTraitsForConfig($elements);
                     break;
                 default:
             }
         }
     }
 
-    private function addPackageConfigForConfig(array $elements, string $projectDir): void
+    private function removeTraitsForConfig(array $elements): void
     {
-        foreach ($elements as $packageConfigName => $packageConfigs) {
-            $packageConfigPath = $projectDir . '/' . $packageConfigName;
+        foreach ($elements as $entity => $traits) {
+            foreach ($traits['add'] as $trait) {
+                $traitAssigned = $this->traitor->alreadyUses($entity, $trait);
 
-            $yamlParser = new Parser();
-            $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
-
-            foreach ($packageConfigs['add'] as $packageConfig) {
-                $numberOfImports = count($packageConfigFile['imports']);
-
-                if (false === array_search($packageConfig, array_column($packageConfigFile['imports'], 'resource'))) {
-                    $packageConfigFile['imports'][$numberOfImports] = ['resource' => $packageConfig];
+                if ($traitAssigned) {
+                    $this->traitor->removeTrait($trait)->toClass($entity);
                 }
             }
-
-            file_put_contents($packageConfigPath, Yaml::dump($packageConfigFile, 99, 4));
         }
     }
 }

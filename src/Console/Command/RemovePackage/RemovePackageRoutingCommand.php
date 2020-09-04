@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DH\ArtisPackageManagerBundle\Console\Command;
+namespace DH\ArtisPackageManagerBundle\Console\Command\RemovePackage;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,9 +11,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
 
-final class RemovePackageConfigCommand extends Command
+final class RemovePackageRoutingCommand extends Command
 {
-    protected static $defaultName = 'artis:remove-package-config';
+    protected static $defaultName = 'artis:remove-package-routing';
 
     /** @var ParameterBagInterface */
     private $parameterBag;
@@ -31,8 +31,8 @@ final class RemovePackageConfigCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Removing package config.')
-            ->setHelp('This command allows you to remove package config...');
+            ->setDescription('Removing package routing.')
+            ->setHelp('This command allows you to remove package routing...');
     }
 
     public function setPackageName(string $packageName): void
@@ -56,27 +56,29 @@ final class RemovePackageConfigCommand extends Command
 
         foreach ($config['install'] as $elementName => $elements) {
             switch ($elementName) {
-                case 'config':
-                    $this->removePackageConfigForConfig($elements, $projectDir);
+                case 'routing':
+                    $this->removePackageRoutingForConfig($elements, $projectDir);
                     break;
                 default:
             }
         }
     }
 
-    private function removePackageConfigForConfig(array $elements, string $projectDir): void
+    private function removePackageRoutingForConfig(array $elements, string $projectDir): void
     {
         foreach ($elements as $packageConfigName => $packageConfigs) {
             $packageConfigPath = $projectDir . '/' . $packageConfigName;
 
+            if (!is_file($packageConfigPath)) {
+                file_put_contents($packageConfigPath, '');
+            }
+
             $yamlParser = new Parser();
             $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
 
-            foreach ($packageConfigs['add'] as $packageConfig) {
-                $packageConfigId = array_search($packageConfig, array_column($packageConfigFile['imports'], 'resource'));
-
-                if (false !== $packageConfigId) {
-                    unset($packageConfigFile['imports'][$packageConfigId]);
+            foreach ($packageConfigs['add'] as $packageRoutingName => $packageConfig) {
+                if (!array_key_exists($packageRoutingName, $packageConfigFile)) {
+                    unset($packageConfigFile[$packageRoutingName]);
                 }
             }
 

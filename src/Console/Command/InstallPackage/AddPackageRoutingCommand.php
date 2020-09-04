@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DH\ArtisPackageManagerBundle\Console\Command;
+namespace DH\ArtisPackageManagerBundle\Console\Command\InstallPackage;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -76,12 +76,12 @@ final class AddPackageRoutingCommand extends Command
             $yamlParser = new Parser();
             $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
 
-            foreach ($packageConfigs['add'] as $packageConfigName => $packageConfig) {
-                $packageRouting[$packageConfigName] = [
+            foreach ($packageConfigs['add'] as $packageRoutingName => $packageConfig) {
+                $packageRouting[$packageRoutingName] = [
                     'resource' => $packageConfig['resource']
                 ];
 
-                if (!array_key_exists($packageConfigName, $packageConfigFile)) {
+                if (!array_key_exists($packageRoutingName, $packageConfigFile)) {
                     $packageConfigFile = array_merge($packageConfigFile, $packageRouting);
                 }
             }

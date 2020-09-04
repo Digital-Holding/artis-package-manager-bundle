@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DH\ArtisPackageManagerBundle\Console\Command;
+namespace DH\ArtisPackageManagerBundle\Console\Command\InstallPackage;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,9 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Traitor\Traitor;
 
-final class RemoveTraitCommand extends Command
+final class AddTraitCommand extends Command
 {
-    protected static $defaultName = 'artis:remove-traits';
+    protected static $defaultName = 'artis:add-traits';
 
     /** @var Traitor */
     private $traitor;
@@ -34,8 +34,8 @@ final class RemoveTraitCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Removing traits.')
-            ->setHelp('This command allows you to remove traits...');
+            ->setDescription('Setting up traits.')
+            ->setHelp('This command allows you to set up traits...');
     }
 
     public function setPackageName(string $packageName): void
@@ -60,21 +60,21 @@ final class RemoveTraitCommand extends Command
         foreach ($config['install'] as $elementName => $elements) {
             switch ($elementName) {
                 case 'trait':
-                    $this->removeTraitsForConfig($elements);
+                    $this->addTraitsForConfig($elements);
                     break;
                 default:
             }
         }
     }
 
-    private function removeTraitsForConfig(array $elements): void
+    private function addTraitsForConfig(array $elements): void
     {
         foreach ($elements as $entity => $traits) {
             foreach ($traits['add'] as $trait) {
                 $traitAssigned = $this->traitor->alreadyUses($entity, $trait);
 
-                if ($traitAssigned) {
-                    $this->traitor->removeTrait($trait)->toClass($entity);
+                if (!$traitAssigned) {
+                    $this->traitor->addTrait($trait)->toClass($entity);
                 }
             }
         }
