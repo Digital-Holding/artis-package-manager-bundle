@@ -67,14 +67,14 @@ final class RemovePackageRoutingCommand extends Command
     private function removePackageRoutingForConfig(array $elements, string $projectDir): void
     {
         foreach ($elements as $packageConfigName => $packageConfigs) {
-            $packageConfigPath = $projectDir . '/' . $packageConfigName;
+            $packageRoutingPath = $projectDir . '/' . $packageConfigName;
 
-            if (!is_file($packageConfigPath)) {
-                file_put_contents($packageConfigPath, '');
+            if (!is_file($packageRoutingPath)) {
+                file_put_contents($packageRoutingPath, '');
             }
 
             $yamlParser = new Parser();
-            $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
+            $packageConfigFile = $yamlParser->parseFile($packageRoutingPath);
 
             foreach ($packageConfigs['add'] as $packageRoutingName => $packageConfig) {
                 if (!array_key_exists($packageRoutingName, $packageConfigFile)) {
@@ -82,7 +82,7 @@ final class RemovePackageRoutingCommand extends Command
                 }
             }
 
-            file_put_contents($packageConfigPath, Yaml::dump($packageConfigFile, 99, 4));
+            file_put_contents($packageRoutingPath, Yaml::dump($packageConfigFile, 99, 4));
         }
     }
 }
