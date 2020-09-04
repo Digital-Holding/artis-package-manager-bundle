@@ -46,6 +46,7 @@ final class InstallPackageCommand extends Command
 
         $this->runAddTraitCommand($packageName, $output);
         $this->runAddPackageConfigCommand($packageName, $output);
+        $this->runAddPackageRoutingCommand($packageName, $output);
 
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln('<info>Package has been successfully installed and configured.</info>');
@@ -68,5 +69,14 @@ final class InstallPackageCommand extends Command
 
         $addPackageConfigInput = new ArrayInput([AddPackageConfigCommand::getDefaultName()]);
         $addPackageConfigCommand->run($addPackageConfigInput, $output);
+    }
+
+    private function runAddPackageRoutingCommand(string $packageName, OutputInterface $output): void
+    {
+        $addPackageRoutingCommand = $this->getApplication()->find('artis:add-package-routing');
+        $addPackageRoutingCommand->setPackageName($packageName);
+
+        $addPackageRoutingInput = new ArrayInput([AddPackageRoutingCommand::getDefaultName()]);
+        $addPackageRoutingCommand->run($addPackageRoutingInput, $output);
     }
 }

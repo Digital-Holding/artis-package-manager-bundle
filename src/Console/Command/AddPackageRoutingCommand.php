@@ -69,14 +69,20 @@ final class AddPackageRoutingCommand extends Command
         foreach ($elements as $packageConfigName => $packageConfigs) {
             $packageConfigPath = $projectDir . '/' . $packageConfigName;
 
+            if (!is_file($packageConfigPath)) {
+                file_put_contents($packageConfigPath, '');
+            }
+
             $yamlParser = new Parser();
             $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
 
-            foreach ($packageConfigs['add'] as $packageConfig) {
-                $numberOfImports = count($packageConfigFile['imports']);
+            foreach ($packageConfigs['add'] as $packageConfigName => $packageConfig) {
+                $packageRouting[$packageConfigName] = [
+                    'resource' => $packageConfig['resource']
+                ];
 
-                if (false === array_search($packageConfig, array_column($packageConfigFile['imports'], 'resource'))) {
-                    $packageConfigFile['imports'][$numberOfImports] = ['resource' => $packageConfig];
+                if (!array_key_exists($packageConfigName, $packageConfigFile)) {
+                    $packageConfigFile = array_merge($packageConfigFile, $packageRouting);
                 }
             }
 

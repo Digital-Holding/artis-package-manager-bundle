@@ -42,20 +42,31 @@ final class RemovePackageCommand extends Command
             $packageName = substr($packageName, 0, strpos($packageName, ":"));
         }
 
-        $removeTraitCommand = $this->getApplication()->find('artis:remove-traits');
-        $removeTraitCommand->setPackageName($packageName);
-
-        $arguments = [
-            RemovePackageCommand::getDefaultName(),
-        ];
-
-        $removeTraitInput = new ArrayInput($arguments);
-        $removeTraitCommand->run($removeTraitInput, $output);
+        $this->runRemoveTraitCommand($packageName, $output);
+        $this->runRemovePackageConfigCommand($packageName, $output);
 
         passthru('composer remove ' . $packageName);
 
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln('<info>Package has been successfully removed.</info>');
         $outputStyle->newLine();
+    }
+
+    private function runRemoveTraitCommand(string $packageName, OutputInterface $output): void
+    {
+        $removeTraitCommand = $this->getApplication()->find('artis:remove-traits');
+        $removeTraitCommand->setPackageName($packageName);
+
+        $removeTraitInput = new ArrayInput([RemovePackageCommand::getDefaultName()]);
+        $removeTraitCommand->run($removeTraitInput, $output);
+    }
+
+    private function runRemovePackageConfigCommand(string $packageName, OutputInterface $output): void
+    {
+        $removePackageConfigCommand = $this->getApplication()->find('artis:remove-package-config');
+        $removePackageConfigCommand->setPackageName($packageName);
+
+        $removePackageConfigInput = new ArrayInput([RemovePackageConfigCommand::getDefaultName()]);
+        $removePackageConfigCommand->run($removePackageConfigInput, $output);
     }
 }
