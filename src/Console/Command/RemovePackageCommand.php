@@ -47,7 +47,7 @@ final class RemovePackageCommand extends Command
 
         $this->runRemoveTraitCommand($packageName, $output);
         $this->runRemovePackageConfigCommand($packageName, $output);
-        $this->runRemoveTraitCommand($packageName, $output);
+        $this->runRemovePackageRoutingCommand($packageName, $output);
 
         passthru('composer remove ' . $packageName);
 
