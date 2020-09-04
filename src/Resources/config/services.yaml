@@ -40,3 +40,10 @@ services:
             - "@parameter_bag"
         tags:
             - { name: console.command, command: artis:remove-package-config }
+
+    dh_artis_package_manager_bundle.command.add_package_routing:
+        class: DH\ArtisPackageManagerBundle\Console\Command\AddPackageRoutingCommand
+        arguments:
+            - "@parameter_bag"
+        tags:
+            - { name: console.command, command: artis:add-package-routing }
