@@ -55,7 +55,6 @@ services:
         tags:
             - { name: console.command, command: artis:remove-package-routing }
 
-
     dh_artis_package_manager_bundle.command.add_interface:
         class: DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddInterfaceCommand
         arguments:
