@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DH\ArtisPackageManagerBundle\Console\Command;
 
+use DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemoveInterfaceCommand;
 use DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemovePackageConfigCommand;
 use DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemovePackageRoutingCommand;
 use DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemoveTraitCommand;
@@ -46,6 +47,7 @@ final class RemovePackageCommand extends Command
         }
 
         $this->runRemoveTraitCommand($packageName, $output);
+        $this->runRemoveInterfaceCommand($packageName, $output);
         $this->runRemovePackageConfigCommand($packageName, $output);
         $this->runRemovePackageRoutingCommand($packageName, $output);
 
@@ -81,5 +83,14 @@ final class RemovePackageCommand extends Command
 
         $removePackageRoutingInput = new ArrayInput([RemovePackageRoutingCommand::getDefaultName()]);
         $removePackageRoutingCommand->run($removePackageRoutingInput, $output);
+    }
+
+    private function runRemoveInterfaceCommand(string $packageName, OutputInterface $output): void
+    {
+        $removeInterfaceCommand = $this->getApplication()->find('artis:remove-interfaces');
+        $removeInterfaceCommand->setPackageName($packageName);
+
+        $removeInterfaceInput = new ArrayInput([RemoveInterfaceCommand::getDefaultName()]);
+        $removeInterfaceCommand->run($removeInterfaceInput, $output);
     }
 }

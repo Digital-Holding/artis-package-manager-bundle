@@ -1,13 +1,13 @@
 services:
     dh_artis_package_manager_bundle.command.add_trait:
-        class: DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddTraitCommand
+        class: DH\ArtisPackageManagerBundle\Console\Command\AddTraitCommand
         arguments:
             - "@parameter_bag"
         tags:
             - { name: console.command, command: artis:add-traits }
 
     dh_artis_package_manager_bundle.command.remove_trait:
-        class: DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemoveTraitCommand
+        class: DH\ArtisPackageManagerBundle\Console\Command\RemoveTraitCommand
         arguments:
             - "@parameter_bag"
         tags:
@@ -28,44 +28,22 @@ services:
             - { name: console.command, command: artis:package:remove }
 
     dh_artis_package_manager_bundle.command.add_package_config:
-        class: DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddPackageConfigCommand
+        class: DH\ArtisPackageManagerBundle\Console\Command\AddPackageConfigCommand
         arguments:
             - "@parameter_bag"
         tags:
             - { name: console.command, command: artis:add-package-config }
 
     dh_artis_package_manager_bundle.command.remove_package_config:
-        class: DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemovePackageConfigCommand
+        class: DH\ArtisPackageManagerBundle\Console\Command\RemovePackageConfigCommand
         arguments:
             - "@parameter_bag"
         tags:
             - { name: console.command, command: artis:remove-package-config }
 
     dh_artis_package_manager_bundle.command.add_package_routing:
-        class: DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddPackageRoutingCommand
+        class: DH\ArtisPackageManagerBundle\Console\Command\AddPackageRoutingCommand
         arguments:
             - "@parameter_bag"
         tags:
             - { name: console.command, command: artis:add-package-routing }
-
-    dh_artis_package_manager_bundle.command.remove_package_routing:
-        class: DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemovePackageRoutingCommand
-        arguments:
-            - "@parameter_bag"
-        tags:
-            - { name: console.command, command: artis:remove-package-routing }
-
-
-    dh_artis_package_manager_bundle.command.add_interface:
-        class: DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddInterfaceCommand
-        arguments:
-            - "@parameter_bag"
-        tags:
-            - { name: console.command, command: artis:add-interfaces }
-
-    dh_artis_package_manager_bundle.command.remove_interface:
-        class: DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemoveInterfaceCommand
-        arguments:
-            - "@parameter_bag"
-        tags:
-            - { name: console.command, command: artis:remove-interfaces }
