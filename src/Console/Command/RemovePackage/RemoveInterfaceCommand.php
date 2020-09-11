@@ -74,7 +74,7 @@ final class RemoveInterfaceCommand extends Command
                 $interfaceAssigned = $this->traitor->alreadyUsesInterface($entity, $interface);
 
                 if ($interfaceAssigned) {
-                    $this->traitor->removeTrait($interface)->toClass($entity);
+                    $this->traitor->removeTrait($interface)->toInterface($entity);
                 }
             }
         }
