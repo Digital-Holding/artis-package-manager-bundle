@@ -46,8 +46,8 @@ final class RemovePackageCommand extends Command
             $packageName = substr($packageName, 0, strpos($packageName, ":"));
         }
 
-        $this->runRemoveTraitCommand($packageName, $output);
         $this->runRemoveInterfaceCommand($packageName, $output);
+        $this->runRemoveTraitCommand($packageName, $output);
         $this->runRemovePackageConfigCommand($packageName, $output);
         $this->runRemovePackageRoutingCommand($packageName, $output);
 
