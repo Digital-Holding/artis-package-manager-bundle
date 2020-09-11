@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DH\ArtisPackageManagerBundle\Console\Command;
 
+use DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddInterfaceCommand;
 use DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddPackageConfigCommand;
 use DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddPackageRoutingCommand;
 use DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddTraitCommand;
@@ -48,6 +49,7 @@ final class InstallPackageCommand extends Command
         }
 
         $this->runAddTraitCommand($packageName, $output);
+        $this->runAddInterfaceCommand($packageName, $output);
         $this->runAddPackageConfigCommand($packageName, $output);
         $this->runAddPackageRoutingCommand($packageName, $output);
 
@@ -81,5 +83,14 @@ final class InstallPackageCommand extends Command
 
         $addPackageRoutingInput = new ArrayInput([AddPackageRoutingCommand::getDefaultName()]);
         $addPackageRoutingCommand->run($addPackageRoutingInput, $output);
+    }
+
+    private function runAddInterfaceCommand(string $packageName, OutputInterface $output): void
+    {
+        $addInterfaceCommand = $this->getApplication()->find('artis:add-interfaces');
+        $addInterfaceCommand->setPackageName($packageName);
+
+        $addInterfaceInput = new ArrayInput([AddInterfaceCommand::getDefaultName()]);
+        $addInterfaceCommand->run($addInterfaceInput, $output);
     }
 }

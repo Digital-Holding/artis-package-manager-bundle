@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d9b60720bd87e45f2cd565e229ef4fb",
+    "content-hash": "692f57afede40e9e339cb22a70fb1475",
     "packages": [
         {
             "name": "kkszymanowski/traitor",
-            "version": "dev-remove_trait",
+            "version": "dev-add_interface",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Digital-Holding/Traitor.git",
-                "reference": "13c2167925e6e82921596287a77c3ab27ba37877"
+                "reference": "296689fd4aff7c9151d016a928d6256d9869e598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Digital-Holding/Traitor/zipball/13c2167925e6e82921596287a77c3ab27ba37877",
-                "reference": "13c2167925e6e82921596287a77c3ab27ba37877",
+                "url": "https://api.github.com/repos/Digital-Holding/Traitor/zipball/296689fd4aff7c9151d016a928d6256d9869e598",
+                "reference": "296689fd4aff7c9151d016a928d6256d9869e598",
                 "shasum": ""
             },
             "require": {
@@ -58,7 +58,7 @@
                 "source": "https://github.com/kkszymanowski/traitor",
                 "email": "kuba.szymanowski@inf24.pl"
             },
-            "time": "2020-08-31T08:51:59+00:00"
+            "time": "2020-09-11T10:52:08+00:00"
         },
         {
             "name": "nikic/php-parser",

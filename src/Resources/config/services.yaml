@@ -54,3 +54,17 @@ services:
             - "@parameter_bag"
         tags:
             - { name: console.command, command: artis:remove-package-routing }
+
+    dh_artis_package_manager_bundle.command.add_interface:
+        class: DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddInterfaceCommand
+        arguments:
+            - "@parameter_bag"
+        tags:
+            - { name: console.command, command: artis:add-interfaces }
+
+    dh_artis_package_manager_bundle.command.remove_interface:
+        class: DH\ArtisPackageManagerBundle\Console\Command\RemovePackage\RemoveInterfaceCommand
+        arguments:
+            - "@parameter_bag"
+        tags:
+            - { name: console.command, command: artis:remove-interfaces }
