@@ -1,0 +1,25 @@
+{
+  "install": {
+    "trait": {
+      "DH\\ArtisPackageManagerBundle\\Entity\\Dictionary": {
+        "add": {
+          "archivable": "DH\\ArtisPackageManagerBundle\\Entity\\Traits\\ArchivableTrait"
+        }
+      }
+    },
+    "config": {
+      "config/packages/_sylius.yml" : {
+        "add": {
+          "configFile": "@DHSyliusStockLevelsPlugin/Resources/config/config.yml"
+        }
+      }
+    },
+    "routing": {
+      "config/routes/routing.yml" : {
+        "add": {
+          "dh_sylius_stock_levels_plugin_admin": "@DHSyliusStockLevelsPlugin/Resources/config/routing.yml"
+        }
+      }
+    }
+  }
+}
