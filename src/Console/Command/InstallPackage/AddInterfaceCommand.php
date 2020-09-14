@@ -24,6 +24,9 @@ final class AddInterfaceCommand extends Command
     /** @var string */
     private $packageName;
 
+    /** @var string */
+    private $configPath;
+
     public function __construct(ParameterBagInterface $parameterBag)
     {
         parent::__construct();
@@ -49,13 +52,19 @@ final class AddInterfaceCommand extends Command
         return $this->packageName;
     }
 
+    public function getConfigPath(): string
+    {
+        return $this->configPath;
+    }
+
+    public function setConfigPath(string $configPath): void
+    {
+        $this->configPath = $configPath;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $projectDir = $this->parameterBag->get('kernel.project_dir');
-
-        $configPath = $projectDir . '/vendor/' . $this->packageName . '/src/Resources/config/artis_package_manager_config.json';
-
-        $configFile = file_get_contents($configPath);
+        $configFile = file_get_contents($this->configPath);
         $config = json_decode($configFile, true);
 
         foreach ($config['install'] as $elementName => $elements) {

@@ -48,9 +48,13 @@ final class InstallPackageCommand extends Command
             $packageName = substr($packageName, 0, strpos($packageName, ":"));
         }
 
-        $this->runAddTraitCommand($packageName, $output);
-        $this->runAddInterfaceCommand($packageName, $output);
-        $this->runAddPackageConfigCommand($packageName, $output);
+        $projectDir = $this->parameterBag->get('kernel.project_dir');
+
+        $configPath = $projectDir . '/vendor/' . $packageName . '/src/Resources/config/artis_package_manager_config.json';
+
+        $this->runAddTraitCommand($packageName, $output, $configPath);
+        $this->runAddInterfaceCommand($packageName, $output, $configPath);
+        $this->runAddPackageConfigCommand($packageName, $output, $configPath, $projectDir);
         $this->runAddPackageRoutingCommand($packageName, $output);
 
         $outputStyle = new SymfonyStyle($input, $output);
@@ -58,19 +62,23 @@ final class InstallPackageCommand extends Command
         $outputStyle->newLine();
     }
 
-    private function runAddTraitCommand(string $packageName, OutputInterface $output): void
+    private function runAddTraitCommand(string $packageName, OutputInterface $output, string $configPath): void
     {
         $addTraitCommand = $this->getApplication()->find('artis:add-traits');
         $addTraitCommand->setPackageName($packageName);
+
+        $addTraitCommand->setConfigPath($configPath);
 
         $addTraitInput = new ArrayInput([AddTraitCommand::getDefaultName()]);
         $addTraitCommand->run($addTraitInput, $output);
     }
 
-    private function runAddPackageConfigCommand(string $packageName, OutputInterface $output): void
+    private function runAddPackageConfigCommand(string $packageName, OutputInterface $output, string $configPath, string $projectDir): void
     {
         $addPackageConfigCommand = $this->getApplication()->find('artis:add-package-config');
         $addPackageConfigCommand->setPackageName($packageName);
+        $addPackageConfigCommand->setConfigPath($configPath);
+        $addPackageConfigCommand->setProjectDir($projectDir);
 
         $addPackageConfigInput = new ArrayInput([AddPackageConfigCommand::getDefaultName()]);
         $addPackageConfigCommand->run($addPackageConfigInput, $output);
@@ -85,10 +93,11 @@ final class InstallPackageCommand extends Command
         $addPackageRoutingCommand->run($addPackageRoutingInput, $output);
     }
 
-    private function runAddInterfaceCommand(string $packageName, OutputInterface $output): void
+    private function runAddInterfaceCommand(string $packageName, OutputInterface $output, string $configPath): void
     {
         $addInterfaceCommand = $this->getApplication()->find('artis:add-interfaces');
         $addInterfaceCommand->setPackageName($packageName);
+        $addInterfaceCommand->setConfigPath($configPath);
 
         $addInterfaceInput = new ArrayInput([AddInterfaceCommand::getDefaultName()]);
         $addInterfaceCommand->run($addInterfaceInput, $output);

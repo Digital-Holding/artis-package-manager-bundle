@@ -46,8 +46,12 @@ final class RemovePackageCommand extends Command
             $packageName = substr($packageName, 0, strpos($packageName, ":"));
         }
 
-        $this->runRemoveInterfaceCommand($packageName, $output);
-        $this->runRemoveTraitCommand($packageName, $output);
+        $projectDir = $this->parameterBag->get('kernel.project_dir');
+
+        $configPath = $projectDir . '/vendor/' . $packageName . '/src/Resources/config/artis_package_manager_config.json';
+
+        $this->runRemoveInterfaceCommand($packageName, $output, $configPath);
+        $this->runRemoveTraitCommand($packageName, $output, $configPath);
         $this->runRemovePackageConfigCommand($packageName, $output);
         $this->runRemovePackageRoutingCommand($packageName, $output);
 
@@ -58,10 +62,11 @@ final class RemovePackageCommand extends Command
         $outputStyle->newLine();
     }
 
-    private function runRemoveTraitCommand(string $packageName, OutputInterface $output): void
+    private function runRemoveTraitCommand(string $packageName, OutputInterface $output, string $configPath): void
     {
         $removeTraitCommand = $this->getApplication()->find('artis:remove-traits');
         $removeTraitCommand->setPackageName($packageName);
+        $removeTraitCommand->setConfigPath($configPath);
 
         $removeTraitInput = new ArrayInput([RemoveTraitCommand::getDefaultName()]);
         $removeTraitCommand->run($removeTraitInput, $output);
@@ -85,10 +90,11 @@ final class RemovePackageCommand extends Command
         $removePackageRoutingCommand->run($removePackageRoutingInput, $output);
     }
 
-    private function runRemoveInterfaceCommand(string $packageName, OutputInterface $output): void
+    private function runRemoveInterfaceCommand(string $packageName, OutputInterface $output, string $configPath): void
     {
         $removeInterfaceCommand = $this->getApplication()->find('artis:remove-interfaces');
         $removeInterfaceCommand->setPackageName($packageName);
+        $removeInterfaceCommand->setConfigPath($configPath);
 
         $removeInterfaceInput = new ArrayInput([RemoveInterfaceCommand::getDefaultName()]);
         $removeInterfaceCommand->run($removeInterfaceInput, $output);

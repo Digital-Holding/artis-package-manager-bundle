@@ -7,6 +7,7 @@ namespace DH\ArtisPackageManagerBundle\Console\Command\RemovePackage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Traitor\Traitor;
 
@@ -22,6 +23,9 @@ final class RemoveTraitCommand extends Command
 
     /** @var string */
     private $packageName;
+
+    /** @var string */
+    private $configPath;
 
     public function __construct(ParameterBagInterface $parameterBag)
     {
@@ -48,13 +52,19 @@ final class RemoveTraitCommand extends Command
         return $this->packageName;
     }
 
+    public function getConfigPath(): string
+    {
+        return $this->configPath;
+    }
+
+    public function setConfigPath(string $configPath): void
+    {
+        $this->configPath = $configPath;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $projectDir = $this->parameterBag->get('kernel.project_dir');
-
-        $configPath = $projectDir . '/vendor/' . $this->packageName . '/src/Resources/config/artis_package_manager_config.json';
-
-        $configFile = file_get_contents($configPath);
+        $configFile = file_get_contents($this->configPath);
         $config = json_decode($configFile, true);
 
         foreach ($config['install'] as $elementName => $elements) {
@@ -65,6 +75,10 @@ final class RemoveTraitCommand extends Command
                 default:
             }
         }
+
+        $outputStyle = new SymfonyStyle($input, $output);
+        $outputStyle->writeln('<info>Trait has been successfully removed</info>');
+        $outputStyle->newLine();
     }
 
     private function removeTraitsForConfig(array $elements): void
