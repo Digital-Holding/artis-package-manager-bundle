@@ -1,0 +1,25 @@
+{
+  "install": {
+    "trait": {
+      "DH\\ArtisPackageManagerBundle\\Tests\\fixtures\\AddTrait\\src\\Entity\\Customer": {
+        "add": {
+          "archivable": "DH\\ArtisPackageManagerBundle\\Tests\\fixtures\\AddTrait\\src\\Entity\\Traits\\ArchivableTrait"
+        }
+      }
+    },
+    "interface": {
+      "DH\\ArtisPackageManagerBundle\\Tests\\fixtures\\AddTrait\\src\\Entity\\CustomerInterface": {
+        "add": {
+          "archivable": "DH\\ArtisPackageManagerBundle\\Tests\\fixtures\\AddTrait\\src\\Entity\\Traits\\ArchivableInterface"
+        }
+      }
+    },
+    "config": {
+      "/tests/fixtures/config/main_config.yml" : {
+        "add": {
+          "configFile": "@DHArtisPackageManagerBundle/tests/fixtures/config/external_config.yml"
+        }
+      }
+    }
+  }
+}
