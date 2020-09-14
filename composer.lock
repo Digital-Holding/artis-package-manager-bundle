@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b412284969a8a289786ef464a9c8ab29",
+    "content-hash": "91b6caff6c43ab146bdcae6602c414e7",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -78,16 +78,16 @@
         },
         {
             "name": "kkszymanowski/traitor",
-            "version": "dev-add_interface",
+            "version": "dev-add_interface_on_null_extends",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Digital-Holding/Traitor.git",
-                "reference": "296689fd4aff7c9151d016a928d6256d9869e598"
+                "reference": "1ddcf1a0772b953b82a38ec88868a4b38ba33008"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Digital-Holding/Traitor/zipball/296689fd4aff7c9151d016a928d6256d9869e598",
-                "reference": "296689fd4aff7c9151d016a928d6256d9869e598",
+                "url": "https://api.github.com/repos/Digital-Holding/Traitor/zipball/1ddcf1a0772b953b82a38ec88868a4b38ba33008",
+                "reference": "1ddcf1a0772b953b82a38ec88868a4b38ba33008",
                 "shasum": ""
             },
             "require": {
@@ -128,7 +128,7 @@
                 "source": "https://github.com/kkszymanowski/traitor",
                 "email": "kuba.szymanowski@inf24.pl"
             },
-            "time": "2020-09-11T10:52:08+00:00"
+            "time": "2020-09-14T13:21:37+00:00"
         },
         {
             "name": "myclabs/deep-copy",

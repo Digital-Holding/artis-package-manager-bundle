@@ -100,7 +100,7 @@ final class AddPackageConfigCommand extends Command
             $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
 
             foreach ($packageConfigs['add'] as $packageConfig) {
-                $numberOfImports = count($packageConfigFile['imports']);
+                $numberOfImports = $packageConfigFile['imports'] ? count($packageConfigFile['imports']) : 0;
 
                 if (false === array_search($packageConfig, array_column($packageConfigFile['imports'], 'resource'))) {
                     $packageConfigFile['imports'][$numberOfImports] = ['resource' => $packageConfig];
