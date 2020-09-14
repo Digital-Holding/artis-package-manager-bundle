@@ -80,7 +80,7 @@ final class AddPackageConfigCommand extends Command
         foreach ($config['install'] as $elementName => $elements) {
             switch ($elementName) {
                 case 'config':
-                    $this->addPackageConfigForConfig($elements, '/home/mati/ArtisPackageManagerBundle');
+                    $this->addPackageConfigForConfig($elements, $this->projectDir);
                     break;
                 default:
             }
