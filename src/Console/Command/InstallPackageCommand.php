@@ -55,7 +55,7 @@ final class InstallPackageCommand extends Command
         $this->runAddTraitCommand($packageName, $output, $configPath);
         $this->runAddInterfaceCommand($packageName, $output, $configPath);
         $this->runAddPackageConfigCommand($packageName, $output, $configPath, $projectDir);
-        $this->runAddPackageRoutingCommand($packageName, $output);
+        $this->runAddPackageRoutingCommand($packageName, $output, $configPath, $projectDir);
 
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln('<info>Package has been successfully installed and configured.</info>');
@@ -84,10 +84,12 @@ final class InstallPackageCommand extends Command
         $addPackageConfigCommand->run($addPackageConfigInput, $output);
     }
 
-    private function runAddPackageRoutingCommand(string $packageName, OutputInterface $output): void
+    private function runAddPackageRoutingCommand(string $packageName, OutputInterface $output, string $configPath, string $projectDir): void
     {
         $addPackageRoutingCommand = $this->getApplication()->find('artis:add-package-routing');
         $addPackageRoutingCommand->setPackageName($packageName);
+        $addPackageRoutingCommand->setConfigPath($configPath);
+        $addPackageRoutingCommand->setProjectDir($projectDir);
 
         $addPackageRoutingInput = new ArrayInput([AddPackageRoutingCommand::getDefaultName()]);
         $addPackageRoutingCommand->run($addPackageRoutingInput, $output);

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace DH\ArtisPackageManagerBundle\Tests\Console\Command\InstallPackage;
 
-use DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddTraitCommand;
+use DH\ArtisPackageManagerBundle\Console\Command\InstallPackage\AddPackageConfigCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class AddTraitCommandTest extends KernelTestCase
+class AddPackageConfigCommandTest extends KernelTestCase
 {
     /** @var CommandTester */
     private $commandTester;
@@ -28,11 +28,12 @@ class AddTraitCommandTest extends KernelTestCase
         $this->appKernel = static::createKernel();
 
         $application = new Application();
-        $application->add(new AddTraitCommand($this->parameterBagMock));
+        $application->add(new AddPackageConfigCommand($this->parameterBagMock));
 
-        $command = $application->find('artis:add-traits');
+        $command = $application->find('artis:add-package-config');
         $command->setPackageName('dh/artis-package-manager-bundle');
         $command->setConfigPath($this->appKernel->getProjectDir() . '/tests/fixtures/config/artis_package_manager_config.json');
+        $command->setProjectDir($this->appKernel->getProjectDir());
 
         $this->commandTester = new CommandTester($command);
     }
@@ -42,15 +43,14 @@ class AddTraitCommandTest extends KernelTestCase
         $this->commandTester->execute([]);
         $output = $this->commandTester->getDisplay();
 
-        $this->assertFileExists($this->appKernel->getProjectDir() . '/tests/fixtures/AddTrait/src/Entity/Customer.php');
+        $this->assertFileExists($this->appKernel->getProjectDir() . '/tests/fixtures/config/main_config.yml');
 
-        $content = file_get_contents($this->appKernel->getProjectDir() . '/tests/fixtures/AddTrait/src/Entity/Customer.php');
+        $content = file_get_contents($this->appKernel->getProjectDir() . '/tests/fixtures/config/main_config.yml');
 
         $this->assertStringContainsString(
-            'use DH\ArtisPackageManagerBundle\Tests\fixtures\AddTrait\src\Entity\Traits\ArchivableTrait;',
+            "resource: '@DHArtisPackageManagerBundle/tests/fixtures/config/external_config.yml'",
             $content
         );
-        $this->assertStringContainsString('use ArchivableTrait;', $content);
-        $this->assertStringContainsString('Trait has been successfully added', $output);
+        $this->assertStringContainsString('Config has been successfully added', $output);
     }
 }

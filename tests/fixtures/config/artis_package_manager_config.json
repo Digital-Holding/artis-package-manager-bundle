@@ -20,6 +20,15 @@
           "configFile": "@DHArtisPackageManagerBundle/tests/fixtures/config/external_config.yml"
         }
       }
+    },
+    "routing": {
+      "/tests/fixtures/config/main_routing.yml" : {
+        "add": {
+          "external_routing": {
+            "resource": "@DHArtisPackageManagerBundle/tests/fixtures/config/external_routing.yml"
+          }
+        }
+      }
     }
   }
 }

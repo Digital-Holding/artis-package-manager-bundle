@@ -102,6 +102,11 @@ final class AddPackageConfigCommand extends Command
             foreach ($packageConfigs['add'] as $packageConfig) {
                 $numberOfImports = $packageConfigFile['imports'] ? count($packageConfigFile['imports']) : 0;
 
+                if ($numberOfImports === 0) {
+                    $packageConfigFile['imports'][$numberOfImports] = ['resource' => $packageConfig];
+                    continue;
+                }
+
                 if (false === array_search($packageConfig, array_column($packageConfigFile['imports'], 'resource'))) {
                     $packageConfigFile['imports'][$numberOfImports] = ['resource' => $packageConfig];
                 }

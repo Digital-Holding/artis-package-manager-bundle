@@ -26,12 +26,14 @@ class AddInterfaceCommandTest extends KernelTestCase
             ->getMock();
 
         $this->appKernel = static::createKernel();
-        $application = new Application();
 
+        $application = new Application();
         $application->add(new AddInterfaceCommand($this->parameterBagMock));
+
         $command = $application->find('artis:add-interfaces');
         $command->setPackageName('dh/artis-package-manager-bundle');
         $command->setConfigPath($this->appKernel->getProjectDir() . '/tests/fixtures/config/artis_package_manager_config.json');
+
         $this->commandTester = new CommandTester($command);
     }
 

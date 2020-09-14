@@ -7,6 +7,7 @@ namespace DH\ArtisPackageManagerBundle\Console\Command\InstallPackage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
@@ -20,6 +21,12 @@ final class AddPackageRoutingCommand extends Command
 
     /** @var string */
     private $packageName;
+
+    /** @var string */
+    private $configPath;
+
+    /** @var string */
+    private $projectDir;
 
     public function __construct(ParameterBagInterface $parameterBag)
     {
@@ -45,23 +52,43 @@ final class AddPackageRoutingCommand extends Command
         return $this->packageName;
     }
 
+    public function getConfigPath(): string
+    {
+        return $this->configPath;
+    }
+
+    public function setConfigPath(string $configPath): void
+    {
+        $this->configPath = $configPath;
+    }
+
+    public function getProjectDir(): string
+    {
+        return $this->projectDir;
+    }
+
+    public function setProjectDir(string $projectDir): void
+    {
+        $this->projectDir = $projectDir;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $projectDir = $this->parameterBag->get('kernel.project_dir');
-
-        $configPath = $projectDir . '/vendor/' . $this->packageName . '/src/Resources/config/artis_package_manager_config.json';
-
-        $configFile = file_get_contents($configPath);
+        $configFile = file_get_contents($this->configPath);
         $config = json_decode($configFile, true);
 
         foreach ($config['install'] as $elementName => $elements) {
             switch ($elementName) {
                 case 'routing':
-                    $this->addPackageRoutingForConfig($elements, $projectDir);
+                    $this->addPackageRoutingForConfig($elements, $this->projectDir);
                     break;
                 default:
             }
         }
+
+        $outputStyle = new SymfonyStyle($input, $output);
+        $outputStyle->writeln('<info>Routing has been successfully added</info>');
+        $outputStyle->newLine();
     }
 
     private function addPackageRoutingForConfig(array $elements, string $projectDir): void
@@ -80,6 +107,11 @@ final class AddPackageRoutingCommand extends Command
                 $packageRouting[$packageRoutingName] = [
                     'resource' => $packageConfig['resource']
                 ];
+
+                if (null === $packageConfigFile) {
+                    $packageConfigFile = array_merge([], $packageRouting);
+                    continue;
+                }
 
                 if (!array_key_exists($packageRoutingName, $packageConfigFile)) {
                     $packageConfigFile = array_merge($packageConfigFile, $packageRouting);

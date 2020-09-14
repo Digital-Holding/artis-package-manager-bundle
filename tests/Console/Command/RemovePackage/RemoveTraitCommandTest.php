@@ -26,12 +26,14 @@ class RemoveTraitCommandTest extends KernelTestCase
             ->getMock();
 
         $this->appKernel = static::createKernel();
-        $application = new Application();
 
+        $application = new Application();
         $application->add(new RemoveTraitCommand($this->parameterBagMock));
+
         $command = $application->find('artis:remove-traits');
         $command->setPackageName('dh/artis-package-manager-bundle');
         $command->setConfigPath($this->appKernel->getProjectDir() . '/tests/fixtures/config/artis_package_manager_config.json');
+
         $this->commandTester = new CommandTester($command);
     }
 
