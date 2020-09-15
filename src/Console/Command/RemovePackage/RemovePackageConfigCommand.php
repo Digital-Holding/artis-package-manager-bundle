@@ -99,6 +99,10 @@ final class RemovePackageConfigCommand extends Command
             $yamlParser = new Parser();
             $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
 
+            if (null === $packageConfigFile['imports']) {
+                continue;
+            }
+
             foreach ($packageConfigs['add'] as $packageConfig) {
                 $packageConfigId = array_search($packageConfig, array_column($packageConfigFile['imports'], 'resource'));
 

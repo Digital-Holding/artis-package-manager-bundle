@@ -53,7 +53,7 @@ final class RemovePackageCommand extends Command
         $this->runRemoveInterfaceCommand($packageName, $output, $configPath);
         $this->runRemoveTraitCommand($packageName, $output, $configPath);
         $this->runRemovePackageConfigCommand($packageName, $output, $configPath, $projectDir);
-        $this->runRemovePackageRoutingCommand($packageName, $output);
+        $this->runRemovePackageRoutingCommand($packageName, $output, $configPath, $projectDir);
 
         passthru('composer remove ' . $packageName);
 
@@ -83,10 +83,12 @@ final class RemovePackageCommand extends Command
         $removePackageConfigCommand->run($removePackageConfigInput, $output);
     }
 
-    private function runRemovePackageRoutingCommand(string $packageName, OutputInterface $output): void
+    private function runRemovePackageRoutingCommand(string $packageName, OutputInterface $output, string $configPath, string $projectDir): void
     {
         $removePackageRoutingCommand = $this->getApplication()->find('artis:remove-package-routing');
         $removePackageRoutingCommand->setPackageName($packageName);
+        $removePackageRoutingCommand->setConfigPath($configPath);
+        $removePackageRoutingCommand->setProjectDir($projectDir);
 
         $removePackageRoutingInput = new ArrayInput([RemovePackageRoutingCommand::getDefaultName()]);
         $removePackageRoutingCommand->run($removePackageRoutingInput, $output);
