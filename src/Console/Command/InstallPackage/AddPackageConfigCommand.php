@@ -7,6 +7,7 @@ namespace DH\ArtisPackageManagerBundle\Console\Command\InstallPackage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
@@ -20,6 +21,12 @@ final class AddPackageConfigCommand extends Command
 
     /** @var string */
     private $packageName;
+
+    /** @var string */
+    private $configPath;
+
+    /** @var string */
+    private $projectDir;
 
     public function __construct(ParameterBagInterface $parameterBag)
     {
@@ -45,26 +52,46 @@ final class AddPackageConfigCommand extends Command
         return $this->packageName;
     }
 
+    public function getConfigPath(): string
+    {
+        return $this->configPath;
+    }
+
+    public function setConfigPath(string $configPath): void
+    {
+        $this->configPath = $configPath;
+    }
+
+    public function getProjectDir(): string
+    {
+        return $this->projectDir;
+    }
+
+    public function setProjectDir(string $projectDir): void
+    {
+        $this->projectDir = $projectDir;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $projectDir = $this->parameterBag->get('kernel.project_dir');
-
-        $configPath = $projectDir . '/vendor/' . $this->packageName . '/src/Resources/config/artis_package_manager_config.json';
-
-        $configFile = file_get_contents($configPath);
+        $configFile = file_get_contents($this->configPath);
         $config = json_decode($configFile, true);
 
         foreach ($config['install'] as $elementName => $elements) {
             switch ($elementName) {
                 case 'config':
-                    $this->addPackageConfigForConfig($elements, $projectDir);
+                    $this->addPackageConfigForConfig($elements, $this->projectDir);
                     break;
                 default:
             }
         }
+
+        $outputStyle = new SymfonyStyle($input, $output);
+        $outputStyle->writeln('<info>Config has been successfully added</info>');
+        $outputStyle->newLine();
     }
 
-    private function addPackageConfigForConfig(array $elements, string $projectDir): void
+    private function addPackageConfigForConfig(array $elements, ?string $projectDir): void
     {
         foreach ($elements as $packageConfigName => $packageConfigs) {
             $packageConfigPath = $projectDir . '/' . $packageConfigName;
@@ -73,7 +100,12 @@ final class AddPackageConfigCommand extends Command
             $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
 
             foreach ($packageConfigs['add'] as $packageConfig) {
-                $numberOfImports = count($packageConfigFile['imports']);
+                $numberOfImports = $packageConfigFile['imports'] ? count($packageConfigFile['imports']) : 0;
+
+                if ($numberOfImports === 0) {
+                    $packageConfigFile['imports'][$numberOfImports] = ['resource' => $packageConfig];
+                    continue;
+                }
 
                 if (false === array_search($packageConfig, array_column($packageConfigFile['imports'], 'resource'))) {
                     $packageConfigFile['imports'][$numberOfImports] = ['resource' => $packageConfig];

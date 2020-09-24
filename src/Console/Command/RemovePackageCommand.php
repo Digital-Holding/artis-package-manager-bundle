@@ -46,10 +46,14 @@ final class RemovePackageCommand extends Command
             $packageName = substr($packageName, 0, strpos($packageName, ":"));
         }
 
-        $this->runRemoveInterfaceCommand($packageName, $output);
-        $this->runRemoveTraitCommand($packageName, $output);
-        $this->runRemovePackageConfigCommand($packageName, $output);
-        $this->runRemovePackageRoutingCommand($packageName, $output);
+        $projectDir = $this->parameterBag->get('kernel.project_dir');
+
+        $configPath = $projectDir . '/vendor/' . $packageName . '/src/Resources/config/artis_package_manager_config.json';
+
+        $this->runRemoveInterfaceCommand($packageName, $output, $configPath);
+        $this->runRemoveTraitCommand($packageName, $output, $configPath);
+        $this->runRemovePackageConfigCommand($packageName, $output, $configPath, $projectDir);
+        $this->runRemovePackageRoutingCommand($packageName, $output, $configPath, $projectDir);
 
         passthru('composer remove ' . $packageName);
 
@@ -58,37 +62,43 @@ final class RemovePackageCommand extends Command
         $outputStyle->newLine();
     }
 
-    private function runRemoveTraitCommand(string $packageName, OutputInterface $output): void
+    private function runRemoveTraitCommand(string $packageName, OutputInterface $output, string $configPath): void
     {
         $removeTraitCommand = $this->getApplication()->find('artis:remove-traits');
         $removeTraitCommand->setPackageName($packageName);
+        $removeTraitCommand->setConfigPath($configPath);
 
         $removeTraitInput = new ArrayInput([RemoveTraitCommand::getDefaultName()]);
         $removeTraitCommand->run($removeTraitInput, $output);
     }
 
-    private function runRemovePackageConfigCommand(string $packageName, OutputInterface $output): void
+    private function runRemovePackageConfigCommand(string $packageName, OutputInterface $output, string $configPath, string $projectDir): void
     {
         $removePackageConfigCommand = $this->getApplication()->find('artis:remove-package-config');
         $removePackageConfigCommand->setPackageName($packageName);
+        $removePackageConfigCommand->setConfigPath($configPath);
+        $removePackageConfigCommand->setProjectDir($projectDir);
 
         $removePackageConfigInput = new ArrayInput([RemovePackageConfigCommand::getDefaultName()]);
         $removePackageConfigCommand->run($removePackageConfigInput, $output);
     }
 
-    private function runRemovePackageRoutingCommand(string $packageName, OutputInterface $output): void
+    private function runRemovePackageRoutingCommand(string $packageName, OutputInterface $output, string $configPath, string $projectDir): void
     {
         $removePackageRoutingCommand = $this->getApplication()->find('artis:remove-package-routing');
         $removePackageRoutingCommand->setPackageName($packageName);
+        $removePackageRoutingCommand->setConfigPath($configPath);
+        $removePackageRoutingCommand->setProjectDir($projectDir);
 
         $removePackageRoutingInput = new ArrayInput([RemovePackageRoutingCommand::getDefaultName()]);
         $removePackageRoutingCommand->run($removePackageRoutingInput, $output);
     }
 
-    private function runRemoveInterfaceCommand(string $packageName, OutputInterface $output): void
+    private function runRemoveInterfaceCommand(string $packageName, OutputInterface $output, string $configPath): void
     {
         $removeInterfaceCommand = $this->getApplication()->find('artis:remove-interfaces');
         $removeInterfaceCommand->setPackageName($packageName);
+        $removeInterfaceCommand->setConfigPath($configPath);
 
         $removeInterfaceInput = new ArrayInput([RemoveInterfaceCommand::getDefaultName()]);
         $removeInterfaceCommand->run($removeInterfaceInput, $output);
