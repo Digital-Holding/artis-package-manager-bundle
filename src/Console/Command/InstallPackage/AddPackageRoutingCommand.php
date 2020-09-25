@@ -103,10 +103,10 @@ final class AddPackageRoutingCommand extends Command
             $yamlParser = new Parser();
             $packageConfigFile = $yamlParser->parseFile($packageConfigPath);
 
+            $packageRouting = [];
+
             foreach ($packageConfigs['add'] as $packageRoutingName => $packageConfig) {
-                $packageRouting[$packageRoutingName] = [
-                    'resource' => $packageConfig['resource']
-                ];
+                $packageRouting[$packageRoutingName] = $this->addRoutingOptions($packageRouting, $packageRoutingName, $packageConfig);
 
                 if (null === $packageConfigFile) {
                     $packageConfigFile = array_merge([], $packageRouting);
@@ -120,5 +120,24 @@ final class AddPackageRoutingCommand extends Command
 
             file_put_contents($packageConfigPath, Yaml::dump($packageConfigFile, 99, 4));
         }
+    }
+
+    private function addRoutingOptions(array $packageRouting, string $packageRoutingName, array $packageConfig): array
+    {
+        foreach ($packageConfig as $configOptionKey => $configOptionValue) {
+            if (!isset($packageRouting[$packageRoutingName])) {
+                $packageRouting[$packageRoutingName] = [];
+            }
+
+            array_push($packageRouting[$packageRoutingName], [$configOptionKey => $configOptionValue]);
+        }
+
+        $formattedPackageRouting = [];
+
+        foreach ($packageRouting[$packageRoutingName] as $packageRoutingOption) {
+            $formattedPackageRouting += $packageRoutingOption;
+        }
+
+        return $formattedPackageRouting;
     }
 }

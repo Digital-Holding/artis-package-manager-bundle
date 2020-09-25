@@ -25,7 +25,14 @@
       "/tests/fixtures/config/main_routing.yml" : {
         "add": {
           "external_routing": {
-            "resource": "@DHArtisPackageManagerBundle/tests/fixtures/config/external_routing.yml"
+            "resource": "@DHArtisPackageManagerBundle/tests/fixtures/config/external_routing.yml",
+            "prefix": "/shop-api",
+            "methods": "[GET]"
+          },
+          "external_routing_3": {
+            "resource": "@DHArtisPackageManagerBundle/tests/fixtures/config/external_routing_3.yml",
+            "prefix": "/shop-api",
+            "methods": "[GET]"
           }
         }
       }
