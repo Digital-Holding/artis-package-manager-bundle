@@ -51,9 +51,29 @@ Example trait config:
 ```
 
 The first element in the trait array is the class name with full path, the next thing is **add** array, in this array, we specify what trait we want to add to this class, in the example we have
-**DH\\ExamplePlugin\\Entity\\ArchivableTrait** with identifier **archivableTrait**, this identifier can be anything, **important is  trait name with full path.**
+**DH\\ExamplePlugin\\Entity\\ArchivableTrait** with identifier **archivableTrait**, this identifier can be anything, **important is trait name with full path.**
 
-##### 2. Config
+##### 2. Interface
+Trait is an array of interfaces and interfaces that we want to extend.
+
+Example interface config:
+
+```yaml
+{
+    "interface": {
+      "App\\Entity\\Product\\ProductInterface": {
+        "add": {
+          "archivable": "DH\\ExamplePlugin\\Entity\\ArchivableInterface"
+        }
+      }
+    }
+}
+```
+
+The first element in the interface array is the interface name with full path, the next thing is **add** array, in this array, we specify what interface we want to extend in our interface, in the example we have
+**DH\\ExamplePlugin\\Entity\\ArchivableInterface** with identifier **archivable**, this identifier can be anything, **important is interface name with full path.**
+
+##### 3. Config
 Config is an array of config files that we want to add to _sylius.yaml, in most of the time it is one config file.
 
 Example config:
@@ -73,7 +93,7 @@ Example config:
 The first element in the config array is the path to _sylius.yaml next thing is **add** array, in this array we specify what config file we want to add to _sylius.yaml, in the example we have
 **@DHExamplePlugin/Resources/config/config.yml** with identifier **configFile**, this identifier can be anything, important is the full path to the config file.
 
-##### 3. Routing
+##### 4. Routing
 Routing is an array of routing files that we want to add to routing.yml, most of the time, it is one routing file.
 
 Example routing config:
@@ -93,7 +113,7 @@ Example routing config:
 
 The first element in the routing array is the path to routing.yml, if routing.yml don't exist, will be created in this path, next thing is **add** array, in this array we specify 
 what routing file we want to add to routing.yml, in the example we have route name: **dh_sylius_example_plugin_admin** with identifier **resource**, this identifier is important, next we have full
-path to routing.yml of the plugin.
+path to routing.yml of the plugin, optionally we can add as well prefix and methods like shown in the example.
 
 
 #### The full config should look something like this:
@@ -108,6 +128,13 @@ path to routing.yml of the plugin.
         }
       }
     },
+    "interface": {
+      "App\\Entity\\Product\\ProductInterface": {
+        "add": {
+          "archivable": "DH\\ExamplePlugin\\Entity\\ArchivableInterface"
+        }
+      }
+    },
     "config": {
       "config/packages/_sylius.yaml" : {
         "add": {
@@ -119,7 +146,9 @@ path to routing.yml of the plugin.
       "config/routes/routing.yml" : {
         "add": {
           "dh_sylius_example_plugin_admin": {
-            "resource": "@DHSyliusExamplePlugin/Resources/config/routing.yml"
+            "resource": "@DHSyliusExamplePlugin/Resources/config/routing.yml",
+            "prefix": "/shop-api",
+            "methods": "[GET]"
           }
         }
       }
@@ -129,6 +158,6 @@ path to routing.yml of the plugin.
 ```
 
 ## TODO
-- add more options for routing like: **path, prefix, method..**
-- improve code formatting for php and yaml
+- improve code formatting for yaml
+- remove empty line after import trait removing
 - unit tests
