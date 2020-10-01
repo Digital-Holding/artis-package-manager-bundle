@@ -1,5 +1,5 @@
 {
-    "name":         "dh/artis-package-manager-bundle",
+    "name":         "digital-holding/artis-package-manager-bundle",
     "type":         "symfony-bundle",
     "description":  "Allows to easily manage packages",
     "license": "proprietary",
@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=7.1.3",
+        "php": ">=7.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "kkszymanowski/traitor": "dev-master",
